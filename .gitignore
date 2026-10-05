@@ -1,0 +1,18 @@
+projet.sql
+
+# Local database and uploaded files
+fichiers/supportFiles/*
+fichiers/imagesUt/*
+
+# Local editor and environment files
+.env
+.env.*
+.vscode/
+*.logprojet.sql
+
+# Local database and editor files
+*.log
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
