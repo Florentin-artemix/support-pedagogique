@@ -1,0 +1,235 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ACADEMIC_ADMIN
+  PEDAGOGICAL_MANAGER
+  TEACHER
+  STUDENT
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  phoneNumber  String?
+  role         Role
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  studentProfile Student?
+  teacherProfile Teacher?
+  sessions       Session[]
+  auditLogs      AuditLog[]
+}
+
+model Student {
+  id          String   @id @default(uuid())
+  matricule   String   @unique
+  gender      String?
+  dateOfBirth DateTime?
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promotionId String
+  promotion   Promotion @relation(fields: [promotionId], references: [id])
+}
+
+model Teacher {
+  id           String   @id @default(uuid())
+  academicTitle String?
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  assignments  TeacherCourseAssignment[]
+  supports     Support[]
+}
+
+model Section {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  description String?
+  departments Department[]
+}
+
+model Department {
+  id          String    @id @default(uuid())
+  name        String
+  sectionId   String
+  section     Section   @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  programs    Program[]
+  teachers    Teacher[]
+}
+
+model Program {
+  id           String      @id @default(uuid())
+  name         String
+  departmentId String
+  department   Department  @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  promotions   Promotion[]
+}
+
+model Promotion {
+  id           String    @id @default(uuid())
+  name         String
+  programId    String
+  program      Program   @relation(fields: [programId], references: [id], onDelete: Restrict)
+  students     Student[]
+  
+  supportPromotions SupportPromotion[]
+  assignments       TeacherCourseAssignment[]
+}
+
+model AcademicYear {
+  id        String    @id @default(uuid())
+  code      String    @unique // e.g., "2023-2024"
+  label     String
+  startDate DateTime
+  endDate   DateTime
+  isActive  Boolean   @default(false)
+
+  assignments TeacherCourseAssignment[]
+  supports    Support[]
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+
+  assignments TeacherCourseAssignment[]
+  supports    Support[]
+}
+
+model TeacherCourseAssignment {
+  id             String       @id @default(uuid())
+  teacherId      String
+  teacher        Teacher      @relation(fields: [teacherId], references: [id], onDelete: Restrict)
+  courseId       String
+  course         Course       @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  promotionId    String
+  promotion      Promotion    @relation(fields: [promotionId], references: [id], onDelete: Restrict)
+  academicYearId String
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
+
+  semester       String?
+  hourlyVolume   Int?
+  type           String?
+  status         String       @default("ACTIVE")
+
+  @@unique([teacherId, courseId, promotionId, academicYearId])
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  supports Support[]
+}
+
+enum SupportType {
+  SYLLABUS
+  COURSE
+  TD
+  TP
+  EXERCISE
+  EXAM
+  CORRECTION
+  REFERENCE
+  OTHER
+}
+
+enum SupportStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Support {
+  id             String        @id @default(uuid())
+  title          String
+  description    String?
+  keywords       String?
+  type           SupportType
+  status         SupportStatus @default(DRAFT)
+  version        Int           @default(1)
+  publishedAt    DateTime?
+  
+  courseId       String
+  course         Course        @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  categoryId     String?
+  category       Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  teacherId      String
+  teacher        Teacher       @relation(fields: [teacherId], references: [id], onDelete: Restrict)
+  academicYearId String
+  academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
+
+  document       Document?
+  promotions     SupportPromotion[]
+  downloads      Download[]
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model SupportPromotion {
+  supportId   String
+  support     Support   @relation(fields: [supportId], references: [id], onDelete: Cascade)
+  promotionId String
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+
+  @@id([supportId, promotionId])
+}
+
+model Document {
+  id           String   @id @default(uuid())
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  hash         String   @unique
+  storageKey   String   @unique
+  supportId    String   @unique
+  support      Support  @relation(fields: [supportId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+}
+
+model Download {
+  id        String   @id @default(uuid())
+  userId    String
+  supportId String
+  support   Support  @relation(fields: [supportId], references: [id], onDelete: Cascade)
+  date      DateTime @default(now())
+  ipAddress String?
+  userAgent String?
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String?
+  entityId  String?
+  details   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

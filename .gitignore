@@ -1,18 +1,42 @@
-projet.sql
+# Dependencies
+node_modules
+.pnpm-store
 
-# Local database and uploaded files
-fichiers/supportFiles/*
-fichiers/imagesUt/*
+# Production build outputs
+dist
+dist-ssr
+build
+*.tsbuildinfo
 
-# Local editor and environment files
+# Environment and secrets
 .env
-.env.*
-.vscode/
-*.logprojet.sql
+.env.local
+.env.*.local
+!.env.example
 
-# Local database and editor files
+# Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing & Coverage
+coverage
+.nyc_output
+
+# Uploads and temporary storage
+uploads
+storage
+tmp
+temp
+
+# IDE & OS
 .vscode/
 .idea/
+*.swp
+*.swo
+.DS_Store
 Thumbs.db
 Desktop.ini
