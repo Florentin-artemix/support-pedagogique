@@ -1,5 +1,5 @@
 {
-  "name": "isp-bukavu-platform",
+  "name": "ucb-bukavu-platform",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -7,8 +7,8 @@
     "build": "pnpm -r run build",
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
-    "db:push": "pnpm --filter @isp-bukavu/api exec prisma db push",
-    "seed": "pnpm --filter @isp-bukavu/api run prisma:seed"
+    "db:push": "pnpm --filter @ucb-bukavu/api exec prisma db push",
+    "seed": "pnpm --filter @ucb-bukavu/api run prisma:seed"
   },
   "engines": {
     "node": ">=18.0.0"

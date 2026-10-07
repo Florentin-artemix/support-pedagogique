@@ -1,6 +1,6 @@
 # Feuille de Route d'Implémentation (Roadmap)
 
-Ce document définit les étapes clés pour la refonte complète de la plateforme de gestion pédagogique de l'ISP-Bukavu. La nouvelle plateforme utilisera une architecture moderne (NestJS + React + PostgreSQL) organisée en monorepo, remplaçant ainsi l'ancien système monolithique et vulnérable en PHP.
+Ce document définit les étapes clés pour la refonte complète de la plateforme de gestion pédagogique de l'Université Catholique de Bukavu (UCB). La nouvelle plateforme utilisera une architecture moderne (NestJS + React + PostgreSQL) organisée en monorepo, remplaçant ainsi l'ancien système monolithique et vulnérable en PHP.
 
 ## Phase 1 : Initialisation de l'Architecture (Semaine 1)
 
@@ -61,7 +61,7 @@ Ce document définit les étapes clés pour la refonte complète de la plateform
 **Objectif :** Créer une interface utilisateur moderne, réactive et esthétique.
 
 1.  **Fondations et Design System :**
-    *   Mise en place de TailwindCSS (ou CSS Vanilla structuré) avec une palette de couleurs professionnelle pour l'ISP-Bukavu.
+    *   Mise en place de TailwindCSS (ou CSS Vanilla structuré) avec une palette de couleurs professionnelle pour l'Université Catholique de Bukavu (UCB).
     *   Création des composants réutilisables (Boutons, Modales, Tableaux, Formulaires).
 2.  **Implémentation des Vues (Pages) :**
     *   **Authentification :** Page de connexion.

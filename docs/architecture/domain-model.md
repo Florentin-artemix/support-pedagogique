@@ -1,8 +1,8 @@
-# Modèle de Domaine Métier Cible (ISP-Bukavu)
+# Modèle de Domaine Métier Cible (UCB Bukavu)
 
 ## 1. Vision et Principes Fondamentaux
 
-Le **Système de Gestion Pédagogique de l'ISP-Bukavu** repose sur un domaine académique et pédagogique fortement typé, normalisé et découplé des problématiques de présentation ou de stockage physique.
+Le **Système de Gestion Pédagogique de l'Université Catholique de Bukavu (UCB)** repose sur un domaine académique et pédagogique fortement typé, normalisé et découplé des problématiques de présentation ou de stockage physique.
 
 ### Principes directeurs du Domaine :
 1. **Un cours n'est pas un fichier :** Un `Course` (ex. *Programmation Web Avancée*) est une unité d'enseignement pérenne. Un `Support` est une ressource pédagogique versionnée rattachée à un cours.
@@ -57,7 +57,7 @@ erDiagram
 ### 3.1. Structure Académique
 
 #### `Section`
-Représente une division facultaire ou grande section de l'ISP-Bukavu.
+Représente une faculté ou école universitaire de l'UCB Bukavu.
 - **Attributs :**
   - `id`: UUID (PK)
   - `code`: String (Unique, ex: `SCAI`, `FLA`, `SCIENCES_EXACTES`, `PSYCHO`)
@@ -197,7 +197,7 @@ Table de liaison many-to-many autorisant l'accès d'un support à une ou plusieu
 ### 3.3. Acteurs & Personnes
 
 #### `Teacher`
-Enseignant rattaché à l'ISP-Bukavu.
+Enseignant rattaché à l'Université Catholique de Bukavu (UCB).
 - **Attributs :**
   - `id`: UUID (PK)
   - `userId`: UUID (FK unique vers `User`)
@@ -208,14 +208,14 @@ Enseignant rattaché à l'ISP-Bukavu.
   - `gender`: Enum (`M`, `F`)
   - `academicTitle`: Enum (`PROFESSEUR_ORDINAIRE`, `PROFESSEUR`, `PROFESSEUR_ASSOCIE`, `CHEF_DE_TRAVAUX`, `ASSISTANT_2`, `ASSISTANT_1`)
   - `qualificationLevel`: String (ex: *Doctorat*, *Master 2*, *DEA*, *Ingénieur*)
-  - `specialty`: String (ex: *Génie Logiciel*, *Réseaux*, *Didactique de l'informatique*)
+  - `specialty`: String (ex: *Génie Logiciel*, *Réseaux*, *Intelligence Artificielle*)
   - `phone`: String?
   - `bio`: Text?
   - `createdAt`: Timestamp
   - `updatedAt`: Timestamp
 
 #### `Student`
-Étudiant inscrit à l'ISP-Bukavu.
+Étudiant inscrit à l'Université Catholique de Bukavu (UCB).
 - **Attributs :**
   - `id`: UUID (PK)
   - `userId`: UUID (FK unique vers `User`)

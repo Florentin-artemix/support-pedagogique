@@ -39,7 +39,7 @@ export default function Login() {
             Connexion
           </h2>
           <p className="mt-2 text-center text-sm text-slate-600">
-            Plateforme pédagogique de l'ISP-Bukavu
+            Plateforme pédagogique de l'Université Catholique de Bukavu (UCB)
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -60,7 +60,7 @@ export default function Login() {
                 autoComplete="email"
                 required
                 className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-colors"
-                placeholder="Ex: étudiant@isp-bukavu.ac.cd"
+                placeholder="Ex: etudiant.bac1@ucbukavu.ac.cd ou UCB-2024-0012"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

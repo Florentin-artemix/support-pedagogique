@@ -1,5 +1,5 @@
 {
-  "name": "@isp-bukavu/web",
+  "name": "@ucb-bukavu/web",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
-    "@isp-bukavu/api-contracts": "workspace:*",
-    "@isp-bukavu/ui": "workspace:*",
-    "@isp-bukavu/validation": "workspace:*",
+    "@ucb-bukavu/api-contracts": "workspace:*",
+    "@ucb-bukavu/ui": "workspace:*",
+    "@ucb-bukavu/validation": "workspace:*",
     "@tanstack/react-query": "^5.28.9",
     "axios": "^1.6.8",
     "clsx": "^2.1.0",

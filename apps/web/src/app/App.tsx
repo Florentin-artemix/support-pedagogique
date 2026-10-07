@@ -5,6 +5,7 @@ import MainLayout from '../layouts/MainLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import Home from '../pages/public/Home';
 import Login from '../pages/public/Login';
+import Programs from '../pages/public/Programs';
 
 const queryClient = new QueryClient();
 
@@ -17,8 +18,8 @@ export default function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<div className="p-8 text-center">À propos (en construction)</div>} />
-            <Route path="/programs" element={<div className="p-8 text-center">Programmes (en construction)</div>} />
+            <Route path="/about" element={<div className="p-8 text-center text-slate-700">À propos de l'Université Catholique de Bukavu (UCB)</div>} />
+            <Route path="/programs" element={<Programs />} />
           </Route>
 
           {/* Student Routes */}

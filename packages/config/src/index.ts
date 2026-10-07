@@ -1,3 +1,3 @@
 export const appConfig = {
-  appName: 'ISP-Bukavu Platform',
+  appName: 'UCB-Bukavu Platform',
 };

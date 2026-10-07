@@ -1,8 +1,8 @@
-# Architecture Générale du Système (ISP-Bukavu)
+# Architecture Générale du Système (UCB Bukavu)
 
 ## 1. Vue d'Ensemble du Système
 
-Le **Système de Gestion Pédagogique de l'ISP-Bukavu** est conçu selon une architecture moderne **Full-Stack TypeScript Strict** orchestrée en **Monorepo (pnpm workspaces)**.
+Le **Système de Gestion Pédagogique de l'Université Catholique de Bukavu (UCB)** est conçu selon une architecture moderne **Full-Stack TypeScript Strict** orchestrée en **Monorepo (pnpm workspaces)**.
 
 Il abandonne définitivement le modèle de scripts procéduraux PHP dispersés pour adopter un **Monolithe Modulaire** robuste côté backend et une **Single Page Application (SPA)** réactive, ergonomique et typée de bout en bout côté frontend.
 
@@ -36,7 +36,7 @@ Il abandonne définitivement le modèle de scripts procéduraux PHP dispersés p
 L'arborescence normative du projet est organisée comme suit :
 
 ```
-isp-bukavu/
+ucb-bukavu/
 ├── apps/
 │   ├── api/                     # Backend NestJS (Monolithe modulaire)
 │   └── web/                     # Frontend React + Vite SPA
@@ -66,9 +66,9 @@ apps/api/src/
 ├── students/                    # Gestion des profils étudiants et inscriptions
 ├── teachers/                    # Gestion des enseignants et grades académiques
 │
-├── academic/                    # Structure académique ISP-Bukavu
-│   ├── sections/                # SCAI, FLA, Sciences Exactes, etc.
-│   ├── departments/             # Informatique de Gestion, etc.
+├── academic/                    # Structure académique UCB Bukavu
+│   ├── sections/                # FST, FASEG, Droit, Médecine, etc.
+│   ├── departments/             # Sciences Informatiques, Polytechnique, etc.
 │   ├── programs/                # Cursus LMD (Licence, Master)
 │   ├── promotions/              # Cohortes d'étudiants (L1, L2, L3)
 │   ├── academic-years/          # Années académiques avec bascule d'activité
@@ -110,7 +110,7 @@ apps/web/src/
 ├── components/                  # Composants partagés (modales, tableaux paginés, loaders)
 ├── layouts/                     # Mises en page différenciées (AuthLayout, DashboardLayout)
 ├── pages/                       # Vues routées par espace métier
-│   ├── public/                  # Accueil ISP-Bukavu, recherche publique, portails
+│   ├── public/                  # Accueil UCB Bukavu, catalogue filières, portails
 │   ├── student/                 # Espace étudiant (mes cours, supports autorisés, profil)
 │   ├── teacher/                 # Espace enseignant (mes charges, publication de supports)
 │   └── admin/                   # Back-office académique, audit, structure et utilisateurs

@@ -1,13 +1,13 @@
 # Analyse Approfondie du Système Hérité (support-pedagogique)
-**Établissement cible :** Institut Supérieur Pédagogique de Bukavu (ISP-Bukavu)  
+**Établissement cible :** Université Catholique de Bukavu (UCB)  
 **Auteurs initiaux du projet hérité :** Irs Prince Abibu, Yoshua Ayamba, Zigashane Balungwe, Sara Rwema  
-**Contexte initial déduit :** Travail académique en Informatique de Gestion (SCAI), basé sur la base de données `sarahbdd` / `projet`.
+**Contexte initial déduit :** Projet académique en Informatique, basé sur la base de données `sarahbdd` / `projet`.
 
 ---
 
 ## 1. Contexte & Historique de la Base de Code
 
-L'inspection exhaustive du dépôt révèle que le système d'origine a été conçu comme un projet PHP/MySQL destiné à gérer le partage des supports de cours au département d'Informatique de Gestion de l'ISP-Bukavu.
+L'inspection exhaustive du dépôt révèle que le système d'origine a été conçu comme un projet PHP/MySQL destiné à gérer le partage des supports de cours au département d'Informatique.
 
 Cependant, l'analyse des artefacts révèle que ce projet a été construit par dérivation et modification d'un ancien template ou projet de microfinance/prêt (nom du dossier source : `PROJETPRETFIN` pour "Projet Prêt Finance", présence d'un fichier `FORMULAIRE DEMANDE DE CREDIT.docx` dans les supports, et résidus de code tels que le contrôle de rôle `$_SESSION['user']['role'] != 'Bailleur'` dans `mon_role.php`). 
 
@@ -19,7 +19,7 @@ Par la suite, un template d'administration Bootstrap/Spike Dashboard a été int
 
 | Domaine | Fichiers impliqués | Fonctionnalités réelles constatées |
 | :--- | :--- | :--- |
-| **Portail Public** | `index.php`, `style.css` | Page d'accueil avec en-tête ISP-Bukavu / SCAI / ESU et trois portes d'entrée : Département, Étudiants, Enseignants. Liens statiques d'information et boîte à suggestion. |
+| **Portail Public** | `index.php`, `style.css` | Page d'accueil avec en-tête UCB Bukavu / ESU et trois portes d'entrée : Faculté, Étudiants, Enseignants. Liens statiques d'information et boîte à suggestion. |
 | **Authentification à 2 étapes (Département)** | `connection/connectdepartement.php`, `connection/connectetudiantbac1.php`, `connection/connectenseignant.php` | Formulaire intermédiaire vérifiant l'appartenance académique (nom + matricule ou nom de département + code) avant de rediriger vers les formulaires d'authentification utilisateur. |
 | **Authentification & Session** | `connectionUser.php`, `connectionUserDep.php`, `connectionUserEnse.php`, `login.php`, `ma_session.php`, `mon_role.php`, `seDeconnecter.php` | Connexion utilisateur vérifiant `email` (ou `matricule`), `password` (en clair) et `statut = 1`. Création de session `$_SESSION['user']`. Déconnexion via destruction de session. |
 | **Tableau de Bord** | `dashboard.php` | Affichage du profil utilisateur connecté et de 3 indicateurs globaux : Nombre total d'enseignants (`COUNT(*) from enseignant`), d'étudiants (`COUNT(*) from etudiant`), et de supports (`COUNT(*) from support`). Menu latéral adaptant l'affichage selon le rôle. |
@@ -228,7 +228,7 @@ Navigateur
 ## 8. Tri des Fonctionnalités : Conserver, Transformer, Abandonner
 
 ### A. Ce qui est Conservé (Valeur Métier Intactée)
-1. **Périmètre académique ISP-Bukavu :** Sections (ex: SCAI), Départements (ex: Informatique de Gestion), Promotions (BAC1, BAC2, BAC3 / L1, L2, L3 LMD).
+1. **Périmètre académique UCB Bukavu :** Facultés (ex: FST), Départements (ex: Sciences Informatiques), Promotions (BAC1, BAC2, BAC3 / L1, L2, L3 LMD).
 2. **Gestion des Enseignants :** Nom, Niveau académique (Doctorat, Master, DEA, etc.), Spécialité, Matricule, Sexe.
 3. **Gestion des Étudiants :** Matricule académique, Nom complet, Sexe, Photo de profil.
 4. **Catégorisation des Ressources :** Organisation thématique des cours (Programmation, Modélisation, Pédagogie, Gestion, etc.).

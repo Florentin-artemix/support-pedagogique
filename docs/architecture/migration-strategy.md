@@ -1,6 +1,6 @@
 # Stratégie de Migration des Données
 
-Ce document décrit la stratégie de migration des données de l'ancien système (hérité d'un projet de microfinance) vers la nouvelle architecture de la plateforme de gestion pédagogique de l'ISP-Bukavu.
+Ce document décrit la stratégie de migration des données de l'ancien système (hérité d'un projet de microfinance) vers la nouvelle architecture de la plateforme de gestion pédagogique de l'Université Catholique de Bukavu (UCB).
 
 ## 1. Principes Fondamentaux
 

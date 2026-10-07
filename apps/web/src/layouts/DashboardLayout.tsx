@@ -45,7 +45,7 @@ export default function DashboardLayout({ role = 'STUDENT' }: { role?: string })
       
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
-          <h2 className="text-lg font-semibold text-slate-800">ISP-Bukavu Pédagogie</h2>
+          <h2 className="text-lg font-semibold text-slate-800">UCB Bukavu Pédagogie</h2>
           <div className="flex items-center space-x-4">
             <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold">
               U

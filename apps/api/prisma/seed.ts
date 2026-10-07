@@ -3,7 +3,7 @@ import { PrismaClient, Role, SupportType, SupportStatus } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Début du peuplement (seeding) de la base de données ISP-Bukavu...');
+  console.log('🌱 Début du peuplement (seeding) de la base de données Université Catholique de Bukavu (UCB)...');
 
   // 1. Année Académique
   const academicYear = await prisma.academicYear.upsert({
@@ -11,7 +11,7 @@ async function main() {
     update: {},
     create: {
       code: '2023-2024',
-      label: 'Année Académique 2023-2024',
+      label: 'Année Académique 2023-2024 (UCB)',
       startDate: new Date('2023-10-15'),
       endDate: new Date('2024-07-31'),
       isActive: true,
@@ -19,112 +19,161 @@ async function main() {
   });
   console.log(`✓ Année académique: ${academicYear.label}`);
 
-  // 2. Structure Académique : Section -> Département -> Programme -> Promotions
-  const sectionSCAI = await prisma.section.upsert({
-    where: { name: 'Sciences Commerciales, Administratives et Informatique (SCAI)' },
+  // 2. Facultés de l'Université Catholique de Bukavu (UCB)
+  const facSciences = await prisma.section.upsert({
+    where: { name: 'Faculté des Sciences et Technologies (FST)' },
     update: {},
     create: {
-      name: 'Sciences Commerciales, Administratives et Informatique (SCAI)',
-      description: 'Section dédiée aux sciences informatiques, gestion et sciences commerciales',
+      name: 'Faculté des Sciences et Technologies (FST)',
+      description: 'Sciences Informatiques, Sciences de l’Environnement et Département Polytechnique (Génie)',
     },
   });
 
-  const sectionExactes = await prisma.section.upsert({
-    where: { name: 'Sciences Exactes' },
+  const facEco = await prisma.section.upsert({
+    where: { name: 'Faculté des Sciences Économiques et de Gestion (FASEG)' },
     update: {},
     create: {
-      name: 'Sciences Exactes',
-      description: 'Section dédiée aux mathématiques, physique et sciences appliquées',
+      name: 'Faculté des Sciences Économiques et de Gestion (FASEG)',
+      description: 'Économie de Gestion, Finance & Comptabilité, Économie de Développement',
     },
   });
 
-  // Département Informatique
+  const facDroit = await prisma.section.upsert({
+    where: { name: 'Faculté de Droit' },
+    update: {},
+    create: {
+      name: 'Faculté de Droit',
+      description: 'Droit Économique et des Affaires, Droit Privé et Judiciaire, Droit Public',
+    },
+  });
+
+  const facMedecine = await prisma.section.upsert({
+    where: { name: 'Faculté de Médecine' },
+    update: {},
+    create: {
+      name: 'Faculté de Médecine',
+      description: 'Médecine Générale, Chirurgie, Spécialisations Médicales et Santé Publique',
+    },
+  });
+
+  const facAgro = await prisma.section.upsert({
+    where: { name: 'Faculté des Sciences Agronomiques et Environnementales (FSA)' },
+    update: {},
+    create: {
+      name: 'Faculté des Sciences Agronomiques et Environnementales (FSA)',
+      description: 'Phytotechnie, Écosystèmes et Agroéconomie',
+    },
+  });
+
+  const ecoleArchi = await prisma.section.upsert({
+    where: { name: 'École d’Architecture et d’Urbanisme (EAU)' },
+    update: {},
+    create: {
+      name: 'École d’Architecture et d’Urbanisme (EAU)',
+      description: 'Formation d’architectes et urbanistes professionnels',
+    },
+  });
+
+  console.log('✓ Facultés et Écoles UCB créées (FST, FASEG, Droit, Médecine, FSA, Architecture)');
+
+  // 3. Départements au sein de la Faculté des Sciences et Technologies
   let deptInfo = await prisma.department.findFirst({
-    where: { name: 'Informatique de Gestion', sectionId: sectionSCAI.id },
+    where: { name: 'Sciences Informatiques', sectionId: facSciences.id },
   });
   if (!deptInfo) {
     deptInfo = await prisma.department.create({
       data: {
-        name: 'Informatique de Gestion',
-        sectionId: sectionSCAI.id,
+        name: 'Sciences Informatiques',
+        sectionId: facSciences.id,
       },
     });
   }
 
-  // Programme
-  let progLMD = await prisma.program.findFirst({
-    where: { name: 'Licence en Informatique de Gestion (LMD)', departmentId: deptInfo.id },
+  let deptPolytech = await prisma.department.findFirst({
+    where: { name: 'Polytechnique (Génie Chimique et Métallurgie)', sectionId: facSciences.id },
   });
-  if (!progLMD) {
-    progLMD = await prisma.program.create({
+  if (!deptPolytech) {
+    deptPolytech = await prisma.department.create({
       data: {
-        name: 'Licence en Informatique de Gestion (LMD)',
+        name: 'Polytechnique (Génie Chimique et Métallurgie)',
+        sectionId: facSciences.id,
+      },
+    });
+  }
+
+  // 4. Programme d'études (Filière)
+  let progInfo = await prisma.program.findFirst({
+    where: { name: 'Licence en Sciences Informatiques (LMD - Génie Logiciel)', departmentId: deptInfo.id },
+  });
+  if (!progInfo) {
+    progInfo = await prisma.program.create({
+      data: {
+        name: 'Licence en Sciences Informatiques (LMD - Génie Logiciel)',
         departmentId: deptInfo.id,
       },
     });
   }
 
-  // Promotions
+  // 5. Promotions
   const promBac1 = await prisma.promotion.upsert({
-    where: { id: 'prom-bac1-ig' },
+    where: { id: 'prom-bac1-info' },
     update: {},
     create: {
-      id: 'prom-bac1-ig',
-      name: 'BAC1 Informatique de Gestion (L1 LMD)',
-      programId: progLMD.id,
+      id: 'prom-bac1-info',
+      name: 'BAC1 Sciences Informatiques (L1 LMD)',
+      programId: progInfo.id,
     },
   });
 
   const promBac2 = await prisma.promotion.upsert({
-    where: { id: 'prom-bac2-ig' },
+    where: { id: 'prom-bac2-info' },
     update: {},
     create: {
-      id: 'prom-bac2-ig',
-      name: 'BAC2 Informatique de Gestion (L2 LMD)',
-      programId: progLMD.id,
+      id: 'prom-bac2-info',
+      name: 'BAC2 Sciences Informatiques (L2 LMD)',
+      programId: progInfo.id,
     },
   });
 
   const promBac3 = await prisma.promotion.upsert({
-    where: { id: 'prom-bac3-ig' },
+    where: { id: 'prom-bac3-info' },
     update: {},
     create: {
-      id: 'prom-bac3-ig',
-      name: 'BAC3 Informatique de Gestion (L3 LMD)',
-      programId: progLMD.id,
+      id: 'prom-bac3-info',
+      name: 'BAC3 Sciences Informatiques (L3 LMD)',
+      programId: progInfo.id,
     },
   });
-  console.log(`✓ Structure académique créée (SCAI > Informatique de Gestion > BAC1, BAC2, BAC3)`);
+  console.log(`✓ Filière Sciences Informatiques configurée avec les promotions BAC1, BAC2, BAC3`);
 
-  // 3. Catégories de supports
+  // 6. Catégories de supports
   const catProg = await prisma.category.upsert({
-    where: { name: 'Programmation & Développement' },
+    where: { name: 'Génie Logiciel & Programmation' },
     update: {},
-    create: { name: 'Programmation & Développement' },
+    create: { name: 'Génie Logiciel & Programmation' },
   });
 
   const catBdd = await prisma.category.upsert({
-    where: { name: 'Bases de Données & Modélisation' },
+    where: { name: 'Bases de Données & Systèmes d’Information' },
     update: {},
-    create: { name: 'Bases de Données & Modélisation' },
+    create: { name: 'Bases de Données & Systèmes d’Information' },
   });
 
-  const catPedago = await prisma.category.upsert({
-    where: { name: 'Pédagogie & Méthodologie' },
+  const catReseaux = await prisma.category.upsert({
+    where: { name: 'Réseaux & Télécommunications' },
     update: {},
-    create: { name: 'Pédagogie & Méthodologie' },
+    create: { name: 'Réseaux & Télécommunications' },
   });
 
-  // 4. Utilisateurs de test
-  // Mot de passe standard : $argon2id$ (ou hash représentatif)
+  // 7. Utilisateurs de test (Université Catholique de Bukavu)
   const defaultPasswordHash = '$argon2id$v=19$m=65536,t=3,p=4$dGVzdHNhbHQ$hashed_secret_password_for_testing';
 
-  // 4.1 Super Administrateur
+  // 7.1 Super Administrateur
   const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@isp-bukavu.ac.cd' },
+    where: { email: 'admin@ucbukavu.ac.cd' },
     update: {},
     create: {
-      email: 'admin@isp-bukavu.ac.cd',
+      email: 'admin@ucbukavu.ac.cd',
       passwordHash: defaultPasswordHash,
       firstName: 'Prince',
       lastName: 'Abibu',
@@ -134,12 +183,12 @@ async function main() {
     },
   });
 
-  // 4.2 Administrateur Académique
+  // 7.2 Administrateur Académique (Secrétaire Général Académique UCB)
   const academicAdmin = await prisma.user.upsert({
-    where: { email: 'academic@isp-bukavu.ac.cd' },
+    where: { email: 'academic@ucbukavu.ac.cd' },
     update: {},
     create: {
-      email: 'academic@isp-bukavu.ac.cd',
+      email: 'academic@ucbukavu.ac.cd',
       passwordHash: defaultPasswordHash,
       firstName: 'Jean-Pierre',
       lastName: 'Mukamba',
@@ -149,12 +198,12 @@ async function main() {
     },
   });
 
-  // 4.3 Enseignants
+  // 7.3 Enseignant UCB
   const profKendaUser = await prisma.user.upsert({
-    where: { email: 'kenda@isp-bukavu.ac.cd' },
+    where: { email: 'prof.kenda@ucbukavu.ac.cd' },
     update: {},
     create: {
-      email: 'kenda@isp-bukavu.ac.cd',
+      email: 'prof.kenda@ucbukavu.ac.cd',
       passwordHash: defaultPasswordHash,
       firstName: 'Kenda',
       lastName: 'Kasongo',
@@ -181,12 +230,12 @@ async function main() {
     });
   }
 
-  // 4.4 Étudiants de test
+  // 7.4 Étudiants UCB
   const studentBac1User = await prisma.user.upsert({
-    where: { email: 'etudiant.bac1@isp-bukavu.ac.cd' },
+    where: { email: 'etudiant.bac1@ucbukavu.ac.cd' },
     update: {},
     create: {
-      email: 'etudiant.bac1@isp-bukavu.ac.cd',
+      email: 'etudiant.bac1@ucbukavu.ac.cd',
       passwordHash: defaultPasswordHash,
       firstName: 'Yoshua',
       lastName: 'Ayamba',
@@ -195,7 +244,7 @@ async function main() {
       isActive: true,
       studentProfile: {
         create: {
-          matricule: 'ISP-2024-0012',
+          matricule: 'UCB-2024-0012',
           gender: 'M',
           promotionId: promBac1.id,
         },
@@ -208,7 +257,7 @@ async function main() {
     studentBac1 = await prisma.student.create({
       data: {
         userId: studentBac1User.id,
-        matricule: 'ISP-2024-0012',
+        matricule: 'UCB-2024-0012',
         gender: 'M',
         promotionId: promBac1.id,
       },
@@ -216,10 +265,10 @@ async function main() {
   }
 
   const studentBac2User = await prisma.user.upsert({
-    where: { email: 'etudiant.bac2@isp-bukavu.ac.cd' },
+    where: { email: 'etudiant.bac2@ucbukavu.ac.cd' },
     update: {},
     create: {
-      email: 'etudiant.bac2@isp-bukavu.ac.cd',
+      email: 'etudiant.bac2@ucbukavu.ac.cd',
       passwordHash: defaultPasswordHash,
       firstName: 'Sarah',
       lastName: 'Nabintu',
@@ -228,7 +277,7 @@ async function main() {
       isActive: true,
       studentProfile: {
         create: {
-          matricule: 'ISP-2024-0045',
+          matricule: 'UCB-2024-0045',
           gender: 'F',
           promotionId: promBac2.id,
         },
@@ -241,36 +290,36 @@ async function main() {
     studentBac2 = await prisma.student.create({
       data: {
         userId: studentBac2User.id,
-        matricule: 'ISP-2024-0045',
+        matricule: 'UCB-2024-0045',
         gender: 'F',
         promotionId: promBac2.id,
       },
     });
   }
-  console.log(`✓ Utilisateurs créés (Admin, Académique, Enseignant Kenda, Étudiants BAC1 & BAC2)`);
+  console.log(`✓ Utilisateurs UCB créés (Admin, Académique, Prof. Kenda, Étudiants BAC1 & BAC2)`);
 
-  // 5. Cours
-  let courseWeb = await prisma.course.findFirst({ where: { name: 'Développement Web & Architecture Client-Serveur' } });
+  // 8. Cours
+  let courseWeb = await prisma.course.findFirst({ where: { name: 'Développement Web Moderne & Systèmes Distribués' } });
   if (!courseWeb) {
     courseWeb = await prisma.course.create({
       data: {
-        name: 'Développement Web & Architecture Client-Serveur',
-        description: 'Technologies Web modernes: HTML5, CSS3, TypeScript, React et NestJS',
+        name: 'Développement Web Moderne & Systèmes Distribués',
+        description: 'Technologies Web: Architecture TypeScript, React, NestJS et APIs RESTful',
       },
     });
   }
 
-  let courseBdd = await prisma.course.findFirst({ where: { name: 'Conception et Administration des Bases de Données' } });
+  let courseBdd = await prisma.course.findFirst({ where: { name: 'Conception et Administration des Bases de Données Relationnelles' } });
   if (!courseBdd) {
     courseBdd = await prisma.course.create({
       data: {
-        name: 'Conception et Administration des Bases de Données',
+        name: 'Conception et Administration des Bases de Données Relationnelles',
         description: 'Modélisation relationnelle, SQL avancé, ORM Prisma et PostgreSQL',
       },
     });
   }
 
-  // 6. Affectation Enseignant (TeacherCourseAssignment)
+  // 9. Affectation Enseignant (TeacherCourseAssignment)
   const assignment = await prisma.teacherCourseAssignment.upsert({
     where: {
       teacherId_courseId_promotionId_academicYearId: {
@@ -288,20 +337,20 @@ async function main() {
       academicYearId: academicYear.id,
       semester: 'Semestre 1',
       hourlyVolume: 45,
-      type: 'Cours Magistral + TP',
+      type: 'Cours Magistral + Travaux Pratiques',
       status: 'ACTIVE',
     },
   });
-  console.log(`✓ Affectation de cours créée pour Prof. Kenda sur BAC1`);
+  console.log(`✓ Affectation de cours créée pour Prof. Kenda sur BAC1 Informatique`);
 
-  // 7. Supports Pédagogiques de test
-  let support1 = await prisma.support.findFirst({ where: { title: 'Syllabus complet - Développement Web Moderne' } });
+  // 10. Supports Pédagogiques UCB
+  let support1 = await prisma.support.findFirst({ where: { title: 'Syllabus complet - Développement Web Moderne (UCB-FST)' } });
   if (!support1) {
     support1 = await prisma.support.create({
       data: {
-        title: 'Syllabus complet - Développement Web Moderne',
+        title: 'Syllabus complet - Développement Web Moderne (UCB-FST)',
         description: 'Support de cours magistral comprenant l’ensemble des chapitres du semestre 1.',
-        keywords: 'web, javascript, typescript, react, nestjs, api',
+        keywords: 'ucb, web, javascript, typescript, react, nestjs, api',
         type: SupportType.SYLLABUS,
         status: SupportStatus.PUBLISHED,
         version: 1,
@@ -317,12 +366,12 @@ async function main() {
     });
   }
 
-  let support2 = await prisma.support.findFirst({ where: { title: 'Travaux Pratiques N°1 - Modélisation & SQL' } });
+  let support2 = await prisma.support.findFirst({ where: { title: 'Travaux Pratiques N°1 - Modélisation & SQL PostgreSQL' } });
   if (!support2) {
     support2 = await prisma.support.create({
       data: {
-        title: 'Travaux Pratiques N°1 - Modélisation & SQL',
-        description: 'Énoncé du TP 1 avec cas pratiques sur la modélisation sous PostgreSQL.',
+        title: 'Travaux Pratiques N°1 - Modélisation & SQL PostgreSQL',
+        description: 'Énoncé du TP 1 avec cas pratiques sur la modélisation sous PostgreSQL à l’UCB.',
         keywords: 'tp, sql, postgresql, relations, requetes',
         type: SupportType.TP,
         status: SupportStatus.PUBLISHED,
@@ -339,8 +388,8 @@ async function main() {
     });
   }
 
-  console.log('✓ Supports pédagogiques créés avec liaison aux promotions');
-  console.log('🎉 Seeding terminé avec succès !');
+  console.log('✓ Supports pédagogiques UCB créés avec liaison aux promotions');
+  console.log('🎉 Seeding UCB Bukavu terminé avec succès !');
 }
 
 main()

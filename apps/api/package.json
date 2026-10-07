@@ -1,5 +1,5 @@
 {
-  "name": "@isp-bukavu/api",
+  "name": "@ucb-bukavu/api",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -27,8 +27,8 @@
     "@prisma/client": "^5.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "@isp-bukavu/api-contracts": "workspace:*",
-    "@isp-bukavu/validation": "workspace:*"
+    "@ucb-bukavu/api-contracts": "workspace:*",
+    "@ucb-bukavu/validation": "workspace:*"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
